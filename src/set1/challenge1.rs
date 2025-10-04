@@ -1,8 +1,15 @@
 use crate::utils::*;
+use std::io;
 
 pub fn run(){
-    let input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
-    println!("{}", hex_to_base64(input));
+    // Test input: 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
+    let mut input = String::new();
+    println!("Enter an Input Hex String: ");
+    
+    io::stdin().read_line(&mut input).unwrap();
+    let cleaned_input = input.trim_end();
+    
+    println!("\nOutput Base64 String:\n{}", hex_to_base64(&cleaned_input));
 }
 
 #[cfg(test)]

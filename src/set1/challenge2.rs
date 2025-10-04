@@ -1,9 +1,24 @@
 use crate::utils::*;
+use std::io;
 
 pub fn run(){
-    let buffer1 = "1c0111001f010100061a024b53535009181c";
-    let buffer2 = "686974207468652062756c6c277320657965";
-    println!("{}", fixed_xor(buffer1, buffer2));
+    // test buffer 1: 1c0111001f010100061a024b53535009181c
+    let mut input1 = String::new();
+    println!("\nEnter an input hex string (Buffer1): ");
+
+    io::stdin().read_line(&mut input1).unwrap();
+    let buffer1 = input1.trim_end();
+
+    // test buffer 2: 686974207468652062756c6c277320657965
+    let mut input2 = String::new();
+    println!("\nEnter an input hex string (Buffer2): ");
+
+    io::stdin().read_line(&mut input2).unwrap();
+    let buffer2 = input2.trim_end();
+
+    // let buffer1 = "1c0111001f010100061a024b53535009181c";
+    // let buffer2 = "686974207468652062756c6c277320657965";
+    println!("\nXOR combination result buffer:\n{}", fixed_xor(buffer1, buffer2));
 }
 
 
