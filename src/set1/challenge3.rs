@@ -8,7 +8,9 @@ pub fn run(){
     io::stdin().read_line(&mut hex_string).unwrap();
     let cleaned_hex_string = hex_string.trim_end();
 
-    
+    let mut xor_key_info: (&str, char) = single_byte_xor(cleaned_hex_string);
+
+
 
 }
 

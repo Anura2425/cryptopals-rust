@@ -39,7 +39,8 @@ pub fn score_character(input: char) -> i32 {
     score
 }
 
-pub fn find_single_byte_xor_key(hex: &str) -> (&str, i32){
-    ("hello", 10)
+pub fn single_byte_xor(hex: &str) -> (&str, char){
+    let mut best_key: char;
+    ("test", 'c')
 }
 
