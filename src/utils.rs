@@ -25,22 +25,64 @@ pub fn fixed_xor(buffer1: &str, buffer2: &str) -> String {
 }
 
 // CHALLENGE 3:
-pub fn score_character(input: char) -> i32 {
-    let mut score: i32 = 0;
-    if input.is_ascii(){
-        if input.is_alphabetic(){
-            if FREQUENT_LETTERS.contains(input.to_ascii_uppercase()){
-                score += 5;
-            }
-            score += 3;
-        }
-        score += 1;
+pub fn score_character(c: u8) -> i32 {
+    let ch = c as char;
+
+    // Penalize non printable characters
+    if !ch.is_ascii() || c < 0x20 || c > 0x7E {
+        return -5;
     }
-    score
+
+    let ch_upper = ch.to_ascii_uppercase();
+
+    // Frequent English letters get highest score
+    if FREQUENT_LETTERS.contains(ch_upper) {
+        return 5;
+    }
+
+    if ch.is_ascii_alphabetic() {
+        return 3;
+    }
+
+    if ch == ' ' {
+        return 3;
+    }
+
+    // Common punctuation
+    if ",.'!?;:".contains(ch) {
+        return 1;
+    }
+
+    0
 }
 
-pub fn single_byte_xor(hex: &str) -> (&str, char){
-    let mut best_key: char;
-    ("test", 'c')
+pub fn single_byte_xor_cipher(hex: &str) -> (String, char) {
+    // try every single-byte key and pick the best-scoring plaintext
+
+    let mut best_key: char = '\0';
+    let mut best_output: String = String::new();
+    let mut best_score: i32 = 0;
+
+    let hex_string: Vec<u8> = decode(hex).unwrap();
+
+    for ascii_value in 0u8..=255u8 {
+        let xored_vector: Vec<u8> = hex_string
+            .iter()
+            .map(|&value| value ^ ascii_value) // XOR each value with current ascii_value (key)
+            .collect();
+
+        let curr_score: i32 = xored_vector
+            .iter()
+            .map(|&b| score_character(b))
+            .sum();
+        
+        if curr_score > best_score {
+            best_score = curr_score;
+            best_key = ascii_value as char;
+            best_output = String::from_utf8_lossy(&xored_vector).to_string();
+        }
+    }
+
+    (best_output, best_key)
 }
 
