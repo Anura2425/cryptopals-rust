@@ -5,6 +5,7 @@ fn main() {
     println!("(1) Convert Hex to Base64");
     println!("(2) Fixed XOR");
     println!("(3) Single-Byte XOR cipher");
+    println!("(4) detect_single_character_xor");
 
     let mut input: String = String::new(); // input is read as a string initially
     io::stdin().read_line(&mut input).expect("Failed to read input");

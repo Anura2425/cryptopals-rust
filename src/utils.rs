@@ -1,9 +1,7 @@
 use base64::engine::general_purpose;
 use base64::Engine as _;
 use hex::{decode, encode};
-use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
+use std::fs;
 
 static FREQUENT_LETTERS: &str = "ETAOIN SHRDLU";
 
@@ -95,26 +93,19 @@ pub fn detect_single_character_xor(filename: &str) -> (String, char, i32, i32){
     let mut best_string: String = String::new();
     let mut best_key: char = '\0';
     let mut best_score: i32 = -1;
-    let mut best_line: i32 = -1;
+    let mut best_line_num: i32 = -1;
 
-    if let Ok(lines) = read_lines(filename){
-        for line in lines.map_while(Result::ok) {
-            line_count += 1;
-            let (decrypted_string, key, score) = single_byte_xor_cipher(&line);
-            if score > best_score{
-                best_score = score;
-                best_key = key;
-                best_line = line_count;
-                best_string = decrypted_string;
-            }
+    let data = fs::read(filename).expect("Should be able to read hosts file");
+    for line in data{
+        line_count+=1;
+        let (decrypted_string, key, score) = single_byte_xor_cipher(&line.to_string().trim());
+        if score > best_score{
+            best_score = score;
+            best_key = key;
+            best_line_num = line_count;
+            best_string = decrypted_string;
         }
     }
 
-    (best_string, best_key, best_score, best_line)
-}
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
+    (best_string, best_key, best_score, best_line_num)
 }
