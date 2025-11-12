@@ -2,7 +2,6 @@ use crate::utils::*;
 use std::io;
 
 pub fn run(){
-    // Test input: 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
     let mut input = String::new();
     println!("Enter an Input Hex String: ");
     

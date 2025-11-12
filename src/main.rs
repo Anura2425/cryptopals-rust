@@ -15,6 +15,7 @@ fn main() {
         1=>cryptopals_rust::set1::challenge1::run(),
         2=>cryptopals_rust::set1::challenge2::run(),
         3=>cryptopals_rust::set1::challenge3::run(),
+        4=>cryptopals_rust::set1::challenge4::run(),
         _=>println!("Select a challenge.")
     }
 }
