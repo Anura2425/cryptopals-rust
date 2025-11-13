@@ -95,10 +95,10 @@ pub fn detect_single_character_xor(filename: &str) -> (String, char, i32, i32){
     let mut best_score: i32 = -1;
     let mut best_line_num: i32 = -1;
 
-    let data = fs::read(filename).expect("Should be able to read hosts file");
-    for line in data{
+    let data = fs::read_to_string(filename).expect("Should be able to read hosts file");
+    for line in data.lines(){
         line_count+=1;
-        let (decrypted_string, key, score) = single_byte_xor_cipher(&line.to_string().trim());
+        let (decrypted_string, key, score) = single_byte_xor_cipher(&line.trim());
         if score > best_score{
             best_score = score;
             best_key = key;
